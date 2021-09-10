@@ -4,7 +4,7 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "next dev",
+    "web": "next dev -p 8084",
     "eject": "expo eject"
   },
   "dependencies": {
@@ -14,16 +14,19 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
-    "react-native-web": "~0.13.12"
+    "react-native-rss-parser": "^1.5.1",
+    "react-native-web": "~0.13.12",
+    "react-xml-parser": "^1.1.8",
+    "rss-parser": "^3.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@expo/next-adapter": "^3.0.1",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
-    "typescript": "~4.0.0",
-    "@expo/next-adapter": "^3.0.1",
     "next-compose-plugins": "^2.2.1",
-    "next-transpile-modules": "^8.0.0"
+    "next-transpile-modules": "^8.0.0",
+    "typescript": "~4.0.0"
   },
   "private": true
 }
