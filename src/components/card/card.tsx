@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import {Image, StyleSheet, Text, View} from "react-native";
 import {IPost} from "../../types/post";
 import IconButton from "../icon-button/icon-button";
 
 const Card = ({ post }: { post: IPost }) => {
+    const [isActiveLike, setActiveLike] = useState(false);
+
     return (
         <View style={styles.card}>
             <View style={styles.header}>
@@ -29,7 +31,13 @@ const Card = ({ post }: { post: IPost }) => {
             </View>
             <View style={styles.buttons}>
                 <View style={styles.button}>
-                    <IconButton name='heart-outline' onPress={() => ({})}/>
+                    <IconButton
+                        name={`heart${!isActiveLike ? '-outline' : ''}`}
+                        fill={isActiveLike ? '#D31027' : 'black'}
+                        onPress={() => {
+                            setActiveLike((value) => !value);
+                        }}
+                    />
                 </View>
                 <View style={styles.button}>
                     <IconButton name='message-circle-outline' onPress={() => ({})}/>

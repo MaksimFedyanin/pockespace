@@ -10,7 +10,7 @@ export default function Home() {
     const [posts, setPosts] = useState<IPost[]>([]);
 
     useEffect(() => {
-        fetch('http://localhost:8082/feed')
+        fetch('http://192.168.1.6:8082/feed')
             .then((response) => response.json())
             .then((response) => {
 
