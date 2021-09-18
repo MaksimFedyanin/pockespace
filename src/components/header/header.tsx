@@ -4,13 +4,12 @@ import {StyleSheet, View, Text} from "react-native";
 import IconButton from "../icon-button/icon-button";
 import Wrapper from "../wrapper/wrapper";
 
-const Header = () => {
-    return <View style={styles.header}>
+const Header = ({ onLayout }) => {
+    return <View style={styles.header} onLayout={onLayout}>
         <Wrapper>
             <View style={styles.info}>
-                <IconButton name='menu-outline' onPress={() => ({})}/>
+                {/*<IconButton name='menu-outline' onPress={() => ({})}/>*/}
                 <Text style={styles.logo}>POCKESPACE</Text>
-                <View style={{ width: 24 }}/>
                 {/*<IconButton name='message-circle-outline' onPress={() => ({})}/>*/}
             </View>
             <View></View>
@@ -25,7 +24,7 @@ const styles = StyleSheet.create({
     },
     info: {
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "center",
         width: '100%',
     },
     logo: {
