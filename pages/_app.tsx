@@ -6,6 +6,10 @@ import Menu from "../src/components/menu/menu";
 import Tabs from "../src/components/tabs/tabs";
 import useComponentSize from "../src/hooks/useComponentSize";
 import useScreenSize from "../src/hooks/useScreenSize";
+import {Provider} from "react-redux";
+import {initStore} from "../src/redux/store";
+
+const store = initStore();
 
 function PockeSpaceApp({ Component, pageProps }) {
     const [layout, onLayout] = useComponentSize();
@@ -24,19 +28,21 @@ function PockeSpaceApp({ Component, pageProps }) {
         setHeight(window.height - layoutHeader.height - layoutTabs.height);
     }, [window, layoutHeader, layoutTabs]);
 
-    return <View style={isMobile ? styles.appMobile : styles.app} onLayout={onLayout}>
-        {isMobile && mount && <Header onLayout={onLayoutHeader}/>}
-        {isMobile && mount && <Diviner/>}
-        {!isMobile && mount && <View style={styles.menu}>
-            <Menu/>
-        </View>}
-        <View style={isMobile ? { height } : styles.wrapper}>
-            <Component {...pageProps} />
+    return <Provider store={store}>
+        <View style={isMobile ? styles.appMobile : styles.app} onLayout={onLayout}>
+            {isMobile && mount && <Header onLayout={onLayoutHeader}/>}
+            {isMobile && mount && <Diviner/>}
+            {!isMobile && mount && <View style={styles.menu}>
+                <Menu/>
+            </View>}
+            <View style={isMobile ? { height } : styles.wrapper}>
+                <Component {...pageProps} />
+            </View>
+            {!isMobile && mount && <View style={styles.menu}>
+            </View>}
+            {isMobile && mount && <Tabs onLayout={onLayoutTabs}/>}
         </View>
-        {!isMobile && mount && <View style={styles.menu}>
-        </View>}
-        {isMobile && mount && <Tabs onLayout={onLayoutTabs}/>}
-    </View>;
+    </Provider>;
 }
 
 const styles = StyleSheet.create({
