@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {Image, StyleSheet, Text, View} from "react-native";
 import {IPost} from "../../types/post";
 import IconButton from "../icon-button/icon-button";
+import PockeSpaceLink from "../link/link";
 
 const Card = ({ post }: { post: IPost }) => {
     const [isActiveLike, setActiveLike] = useState(false);
@@ -18,10 +19,12 @@ const Card = ({ post }: { post: IPost }) => {
                             }}
                         />
                     </View>
-                    <View style={styles.info}>
-                        <Text style={styles.name}>{post.space}</Text>
-                        <Text style={styles.date}>{post.publicationDate}</Text>
-                    </View>
+                    <PockeSpaceLink href={`/post/${post.title}`}>
+                        <View style={styles.info}>
+                            <Text style={styles.name}>{post.space}</Text>
+                            <Text style={styles.date}>{post.publicationDate}</Text>
+                        </View>
+                    </PockeSpaceLink>
                 </View>
                 <IconButton name='more-horizontal-outline' onPress={() => ({})}/>
             </View>
