@@ -1,10 +1,9 @@
 // @generated: @expo/next-adapter@2.1.52
 import React from "react";
 import {StyleSheet, View, Text} from "react-native";
-import IconButton from "../icon-button/icon-button";
 import Wrapper from "../wrapper/wrapper";
 
-const Header = ({ onLayout }) => {
+const Header = ({ onLayout = () => ({}) }) => {
     return <View style={styles.header} onLayout={onLayout}>
         <Wrapper>
             <View style={styles.info}>
@@ -12,7 +11,7 @@ const Header = ({ onLayout }) => {
                 <Text style={styles.logo}>POCKESPACE</Text>
                 {/*<IconButton name='message-circle-outline' onPress={() => ({})}/>*/}
             </View>
-            <View></View>
+            <View/>
         </Wrapper>
     </View>;
 };

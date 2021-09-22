@@ -1,29 +1,31 @@
 // @generated: @expo/next-adapter@2.1.52
-import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { FlatList } from 'react-native';
 import Card from "../src/components/card/card";
-import { IPost } from "../src/types/post";
 import Diviner from "../src/components/diviner/diviner";
 import Wrapper from "../src/components/wrapper/wrapper";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppState } from '../src/redux/appReducer';
+import { getPosts } from "../api/feed";
+import { FEED_ACTIONS } from "../src/redux/feed-slice";
 
 export default function Home() {
     const posts = useSelector((state: AppState) => state.feed.posts);
+    const dispatch = useDispatch();
 
-    console.log(posts);
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const response = await getPosts();
 
-    // useEffect(() => {
-    //     fetch('http://192.168.1.6:8082/feed')
-    //         .then((response) => response.json())
-    //         .then((response) => {
-    //
-    //             setPosts(response.result);
-    //         })
-    //         .catch((error) => {
-    //             console.error(error);
-    //         });
-    // }, []);
+                dispatch(FEED_ACTIONS.setPosts(response.result));
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchPosts();
+    }, []);
 
     return (
         <FlatList
@@ -36,5 +38,3 @@ export default function Home() {
         />
     );
 }
-
-const styles = StyleSheet.create({});

@@ -9,7 +9,7 @@ const feedSlice = createSlice({
   name: 'feed',
   initialState: INITIAL_STATE,
   reducers: {
-    setUrl(state, { payload }) {
+    setPosts(state, { payload }) {
       state.posts = payload;
     },
   },

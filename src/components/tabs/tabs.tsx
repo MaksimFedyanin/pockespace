@@ -4,7 +4,7 @@ import {StyleSheet, View} from "react-native";
 import IconButton from "../icon-button/icon-button";
 import Wrapper from "../wrapper/wrapper";
 
-const Tabs = ({ onLayout }) => {
+const Tabs = ({ onLayout = () => ({}) }) => {
     return <View onLayout={onLayout}>
         <Wrapper>
             <View style={styles.tabs}>
