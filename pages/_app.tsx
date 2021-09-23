@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import {StyleSheet, View, Text, Platform} from "react-native";
 import Header from "../src/components/header/header";
 import Diviner from "../src/components/diviner/diviner";
 import Menu from "../src/components/menu/menu";
@@ -8,6 +8,7 @@ import useComponentSize from "../src/hooks/useComponentSize";
 import useScreenSize from "../src/hooks/useScreenSize";
 import { Provider } from "react-redux";
 import { initStore } from "../src/redux/store";
+import PopupHost from "../src/components/popup/popup-host";
 
 function PockeSpaceApp({ Component, pageProps }) {
     const [layout, onLayout] = useComponentSize();
@@ -23,26 +24,32 @@ function PockeSpaceApp({ Component, pageProps }) {
     }, []);
 
     useEffect(() => {
-        const value = screen.height - layoutHeader.height - layoutTabs.height;
+        const value = window.height - (Platform.OS === 'web' ? 0 : layoutTabs.height);
 
         setHeight(value);
     }, [window, layoutHeader, layoutTabs]);
 
-    return <View>
+    return <View style={{ height }}>
         <Provider store={initStore(pageProps.store)}>
-            <View style={isMobile ? styles.appMobile : styles.app} onLayout={onLayout}>
-                {(mount && isMobile) && <Header onLayout={onLayoutHeader}/>}
-                {(mount && isMobile) && <Diviner/>}
-                {(mount && !isMobile) && <View style={styles.menu}>
-                    <Menu/>
-                </View>}
-                <View style={isMobile ? { flex: 1, maxHeight: height, overflow: "hidden" } : styles.wrapper}>
-                    <Component />
+            <PopupHost>
+                <View style={isMobile ? styles.appMobile : styles.app} onLayout={onLayout}>
+                    {(mount && isMobile) && <Header onLayout={onLayoutHeader}/>}
+                    {(mount && isMobile) && <Diviner/>}
+                    {(mount && !isMobile) && <View style={styles.menu}>
+                        <Menu/>
+                    </View>}
+                    <View style={isMobile ? {
+                        flex: 1,
+                        height,
+                        overflow: "hidden",
+                    } : styles.wrapper}>
+                        <Component />
+                    </View>
+                    {(mount && !isMobile) && <View style={styles.menu}/>}
+                    {(mount && isMobile) && <Diviner/>}
+                    {(mount && isMobile) && <Tabs onLayout={onLayoutTabs}/>}
                 </View>
-                {(mount && !isMobile) && <View style={styles.menu}/>}
-                {(mount && isMobile) && <Diviner/>}
-                {(mount && isMobile) && <Tabs onLayout={onLayoutTabs}/>}
-            </View>
+            </PopupHost>
         </Provider>
     </View>;
 }
@@ -54,8 +61,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     appMobile: {
-        // flex: 1,
-        // justifyContent: "space-between",
         height: '100%',
     },
     wrapper: {
