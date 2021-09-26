@@ -29,20 +29,15 @@ export default function Home() {
     }, []);
 
     return (
-        <React.Fragment>
-            <Popup visible={true}>
-                <Text>22224444</Text>
-            </Popup>
-            <View>
-                <FlatList
-                    data={posts}
-                    renderItem={({ item }) => <Wrapper>
-                        <Card post={item} />
-                    </Wrapper>}
-                    ItemSeparatorComponent={() => <Diviner/>}
-                    keyExtractor={item => item.title}
-                />
-            </View>
-        </React.Fragment>
+        <View style={{ height: '100%' }}>
+            <FlatList
+                data={posts}
+                renderItem={({ item }) => <Wrapper>
+                    <Card post={item} />
+                </Wrapper>}
+                ItemSeparatorComponent={() => <Diviner/>}
+                keyExtractor={item => item.title}
+            />
+        </View>
     );
 }

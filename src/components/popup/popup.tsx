@@ -1,32 +1,60 @@
-import React, {useRef} from "react";
+import React, {useEffect, useRef} from "react";
 import { PopupContext, PopupMethods } from "./popup-host";
 import PopupConsumer from "./popup-consumer";
-import { StyleSheet, View, Animated } from "react-native";
+import {StyleSheet, View, Animated, Easing, Pressable} from "react-native";
 
-const Popup = ({ visible, children }) => {
-    const fadeAnim = useRef(new Animated.Value(0)).current
+const Popup = ({ visible, onClose, children }) => {
+    const animated = useRef(new Animated.Value(0)).current;
+    const opacity = useRef(new Animated.Value(0)).current;
 
-    React.useEffect(() => {
+    useEffect(() => {
         Animated.timing(
-            fadeAnim,
+            animated,
             {
-                toValue: 1,
-                duration: 100,
+                toValue: visible ? 1 : 0,
+                duration: 500,
+                easing: Easing.linear,
                 useNativeDriver: true,
             }
         ).start();
-    }, [fadeAnim]);
+        Animated.timing(
+            opacity,
+            {
+                toValue: visible ? 1 : 0,
+                duration: 200,
+                easing: Easing.linear,
+                useNativeDriver: true,
+            }
+        ).start();
+    }, [visible]);
+
+    const value = animated.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['500%', '0%'],
+    });
 
     return <PopupContext.Consumer>
         {(manager) => (
             <PopupConsumer manager={manager as PopupMethods}>
-                <Animated.View style={{ opacity: fadeAnim }}>
-                    <View style={styles.popup}>
-                        <View style={styles.content}>
-                            {children}
-                        </View>
-                    </View>
-                </Animated.View>
+                {visible && <Pressable
+                    style={{
+                        width: '100%',
+                        height: '100%'
+                    }}
+                    onPress={onClose}
+                >
+                    <Animated.View style={[styles.popup, {opacity: opacity}]}>
+                        <Animated.View style={{
+                            width: '100%',
+                            height: '100%',
+                            transform: [{translateY: value}],
+                        }}>
+                            <View style={styles.content}>
+                                {children}
+                            </View>
+                        </Animated.View>
+                    </Animated.View>
+                </Pressable>}
             </PopupConsumer>
         )}
     </PopupContext.Consumer>;
@@ -44,6 +72,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
     },
     content: {
+        position: 'absolute',
+        bottom: 0,
         width: '100%',
         minHeight: 500,
         backgroundColor: 'white',

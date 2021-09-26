@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {StyleSheet, View, Text, Platform} from "react-native";
+import {StyleSheet, View, Text, Platform, Button} from "react-native";
 import Header from "../src/components/header/header";
 import Diviner from "../src/components/diviner/diviner";
 import Menu from "../src/components/menu/menu";
@@ -9,6 +9,7 @@ import useScreenSize from "../src/hooks/useScreenSize";
 import { Provider } from "react-redux";
 import { initStore } from "../src/redux/store";
 import PopupHost from "../src/components/popup/popup-host";
+import Popup from "../src/components/popup/popup";
 
 function PockeSpaceApp({ Component, pageProps }) {
     const [layout, onLayout] = useComponentSize();
@@ -18,6 +19,7 @@ function PockeSpaceApp({ Component, pageProps }) {
     const [mount, setMount] = useState(false);
     const isMobile = layout?.width < 1024;
     const [height, setHeight] = useState<number | string>(0);
+    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
         setMount(true);
@@ -32,6 +34,9 @@ function PockeSpaceApp({ Component, pageProps }) {
     return <View style={{ height }}>
         <Provider store={initStore(pageProps.store)}>
             <PopupHost>
+                <Popup visible={visible} onClose={() => setVisible(false)}>
+                    <Text>22224444</Text>
+                </Popup>
                 <View style={isMobile ? styles.appMobile : styles.app} onLayout={onLayout}>
                     {(mount && isMobile) && <Header onLayout={onLayoutHeader}/>}
                     {(mount && isMobile) && <Diviner/>}
