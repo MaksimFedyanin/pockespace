@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
-import {StyleSheet, View, Text, Platform, Button} from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
+import { StyleSheet, View, Text, Platform } from "react-native";
 import Header from "../src/components/header/header";
 import Diviner from "../src/components/diviner/diviner";
 import Menu from "../src/components/menu/menu";
 import Tabs from "../src/components/tabs/tabs";
 import useComponentSize from "../src/hooks/useComponentSize";
 import useScreenSize from "../src/hooks/useScreenSize";
-import { Provider } from "react-redux";
-import { initStore } from "../src/redux/store";
 import PopupHost from "../src/components/popup/popup-host";
 import Popup from "../src/components/popup/popup";
+import { RecoilRoot } from "recoil";
+import { initializeRecoilState } from "../src/state/state";
+
+let initialRecoilState;
 
 function PockeSpaceApp({ Component, pageProps }) {
     const [layout, onLayout] = useComponentSize();
@@ -31,8 +33,13 @@ function PockeSpaceApp({ Component, pageProps }) {
         setHeight(value);
     }, [window, layoutHeader, layoutTabs]);
 
+    useMemo(() => {
+        initialRecoilState = initializeRecoilState(pageProps.recoil);
+    }, []);
+
+
     return <View style={{ height }}>
-        <Provider store={initStore(pageProps.store)}>
+        <RecoilRoot initializeState={initialRecoilState}>
             <PopupHost>
                 <Popup visible={visible} onClose={() => setVisible(false)}>
                     <Text>22224444</Text>
@@ -55,7 +62,7 @@ function PockeSpaceApp({ Component, pageProps }) {
                     {(mount && isMobile) && <Tabs onLayout={onLayoutTabs}/>}
                 </View>
             </PopupHost>
-        </Provider>
+        </RecoilRoot>
     </View>;
 }
 
