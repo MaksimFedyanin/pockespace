@@ -1,31 +1,25 @@
-import React, {useEffect, useRef} from "react";
+import React, { useEffect, useRef } from "react";
 import { PopupContext, PopupMethods } from "./popup-host";
 import PopupConsumer from "./popup-consumer";
-import {StyleSheet, View, Animated, Easing, Pressable} from "react-native";
+import { StyleSheet, View, Animated, Pressable } from "react-native";
 
 const Popup = ({ visible, onClose, children }) => {
     const animated = useRef(new Animated.Value(0)).current;
-    const opacity = useRef(new Animated.Value(0)).current;
+    const animatedVisible = useRef(Animated.timing(
+        animated,
+        {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: true,
+        }
+    ));
 
     useEffect(() => {
-        Animated.timing(
-            animated,
-            {
-                toValue: visible ? 1 : 0,
-                duration: 500,
-                easing: Easing.linear,
-                useNativeDriver: true,
-            }
-        ).start();
-        Animated.timing(
-            opacity,
-            {
-                toValue: visible ? 1 : 0,
-                duration: 200,
-                easing: Easing.linear,
-                useNativeDriver: true,
-            }
-        ).start();
+        if (visible) {
+            animatedVisible.current.start();
+        } else {
+            animatedVisible.current.reset();
+        }
     }, [visible]);
 
     const value = animated.interpolate({
@@ -43,7 +37,7 @@ const Popup = ({ visible, onClose, children }) => {
                     }}
                     onPress={onClose}
                 >
-                    <Animated.View style={[styles.popup, {opacity: opacity}]}>
+                    <View style={styles.popup}>
                         <Animated.View style={{
                             width: '100%',
                             height: '100%',
@@ -53,7 +47,7 @@ const Popup = ({ visible, onClose, children }) => {
                                 {children}
                             </View>
                         </Animated.View>
-                    </Animated.View>
+                    </View>
                 </Pressable>}
             </PopupConsumer>
         )}
@@ -77,8 +71,8 @@ const styles = StyleSheet.create({
         width: '100%',
         minHeight: 500,
         backgroundColor: 'white',
-        borderTopRightRadius: 50,
-        borderTopLeftRadius: 50,
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
     }
 });
 
