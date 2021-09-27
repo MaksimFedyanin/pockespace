@@ -1,10 +1,22 @@
-import React from 'react';
-import Home from "./pages/home";
+import React, {useMemo, useRef} from 'react';
 import { SafeAreaView } from "react-native";
-import PockeSpaceApp from "./pages/_app";
+import {initializeRecoilState} from "./src/state/state";
+import {RecoilRoot} from "recoil";
+import Layout from "./src/components/layout/layout";
+import Router from "./src/components/router/router";
 
 export default function App() {
+  const initialRecoilState = useRef({});
+
+  useMemo(() => {
+    initialRecoilState.current = initializeRecoilState();
+  }, []);
+
   return <SafeAreaView>
-    <PockeSpaceApp Component={Home} pageProps={{}}/>
+    <RecoilRoot initializeState={initializeRecoilState(initialRecoilState.current)}>
+      <Layout>
+        <Router/>
+      </Layout>
+    </RecoilRoot>
   </SafeAreaView>;
 };
