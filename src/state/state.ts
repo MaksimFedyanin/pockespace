@@ -1,9 +1,11 @@
 import PostsState from "./posts";
 import RouterState from "./router";
+import PopupState from "./popup";
 
 const state = {
     posts: PostsState,
     router: RouterState,
+    popup: PopupState,
 };
 
 export const initializeRecoilState = (initialRecoilState = {}) => ({set}) =>

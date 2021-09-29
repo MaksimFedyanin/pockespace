@@ -1,13 +1,15 @@
 import useComponentSize from "../../hooks/useComponentSize";
 import useScreenSize from "../../hooks/useScreenSize";
 import React, { useEffect, useState } from "react";
-import { Platform, StyleSheet, Text, View } from "react-native";
+import {Button, Platform, StyleSheet, Text, View} from "react-native";
 import PopupHost from "../popup/popup-host";
 import Popup from "../popup/popup";
 import Header from "../header/header";
 import Diviner from "../diviner/diviner";
 import Menu from "../menu/menu";
 import Tabs from "../tabs/tabs";
+import {useSetRecoilState} from "recoil";
+import {PopupState} from "../../state/popup";
 
 const Layout = ({ children }) => {
     const [layout, onLayout] = useComponentSize();
@@ -17,7 +19,7 @@ const Layout = ({ children }) => {
     const [mount, setMount] = useState(false);
     const isMobile = layout?.width < 1024;
     const [height, setHeight] = useState<number | string>(0);
-    const [visible, setVisible] = useState(false);
+    const showPopup = useSetRecoilState(PopupState);
 
     useEffect(() => {
         setMount(true);
@@ -31,28 +33,25 @@ const Layout = ({ children }) => {
 
 
     return <View style={{ height }}>
-            <PopupHost>
-                <Popup visible={visible} onClose={() => setVisible(false)}>
-                    <Text>22224444</Text>
-                </Popup>
-                <View style={isMobile ? styles.appMobile : styles.app} onLayout={onLayout}>
-                    {(mount && isMobile) && <Header onLayout={onLayoutHeader}/>}
-                    {(mount && isMobile) && <Diviner/>}
-                    {(mount && !isMobile) && <View style={styles.menu}>
-                        <Menu/>
-                    </View>}
-                    <View style={isMobile ? {
-                        flex: 1,
-                        height,
-                        overflow: "hidden",
-                    } : styles.wrapper}>
-                        {children}
-                    </View>
-                    {(mount && !isMobile) && <View style={styles.menu}/>}
-                    {(mount && isMobile) && <Diviner/>}
-                    {(mount && isMobile) && <Tabs onLayout={onLayoutTabs}/>}
-                </View>
-            </PopupHost>
+        <View style={isMobile ? styles.appMobile : styles.app} onLayout={onLayout}>
+            {(mount && isMobile) && <Header onLayout={onLayoutHeader}/>}
+            {(mount && isMobile) && <Diviner/>}
+            {(mount && !isMobile) && <View style={styles.menu}>
+                <Menu/>
+            </View>}
+            <View style={isMobile ? {
+                flex: 1,
+                height,
+                overflow: "hidden",
+            } : styles.wrapper}>
+                <Button title="popup" onPress={() => showPopup('registration')}/>
+                {children}
+            </View>
+            {(mount && !isMobile) && <View style={styles.menu}/>}
+            {(mount && isMobile) && <Diviner/>}
+            {(mount && isMobile) && <Tabs onLayout={onLayoutTabs}/>}
+        </View>
+        <Popup/>
     </View>;
 }
 

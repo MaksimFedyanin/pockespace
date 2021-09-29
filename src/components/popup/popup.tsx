@@ -1,9 +1,18 @@
-import React, { useEffect, useRef } from "react";
-import { PopupContext, PopupMethods } from "./popup-host";
-import PopupConsumer from "./popup-consumer";
-import { StyleSheet, View, Animated, Pressable } from "react-native";
+import React, { useEffect, useMemo, useRef } from "react";
+import {StyleSheet, View, Animated, Pressable, TouchableOpacity} from "react-native";
+import { PopupState, PopupType } from "../../state/popup";
+import RegistrationPopup from "./registration-popup";
+import { useRecoilState } from "recoil";
 
-const Popup = ({ visible, onClose, children }) => {
+const getPopup = (type: PopupType) => {
+    if (type === 'registration') {
+        return RegistrationPopup;
+    }
+
+    return null;
+}
+
+const Popup = () => {
     const animated = useRef(new Animated.Value(0)).current;
     const animatedVisible = useRef(Animated.timing(
         animated,
@@ -13,45 +22,43 @@ const Popup = ({ visible, onClose, children }) => {
             useNativeDriver: true,
         }
     ));
+    const [popupType, setPopupType] = useRecoilState(PopupState);
+    const Component = useMemo(() => getPopup(popupType), [popupType]);
 
     useEffect(() => {
-        if (visible) {
+        if (Component) {
             animatedVisible.current.start();
         } else {
             animatedVisible.current.reset();
         }
-    }, [visible]);
+    }, [Component]);
 
     const value = animated.interpolate({
         inputRange: [0, 1],
         outputRange: ['500%', '0%'],
     });
 
-    return <PopupContext.Consumer>
-        {(manager) => (
-            <PopupConsumer manager={manager as PopupMethods}>
-                {visible && <Pressable
-                    style={{
-                        width: '100%',
-                        height: '100%'
-                    }}
-                    onPress={onClose}
-                >
-                    <View style={styles.popup}>
-                        <Animated.View style={{
-                            width: '100%',
-                            height: '100%',
-                            transform: [{translateY: value}],
-                        }}>
-                            <View style={styles.content}>
-                                {children}
-                            </View>
-                        </Animated.View>
-                    </View>
-                </Pressable>}
-            </PopupConsumer>
-        )}
-    </PopupContext.Consumer>;
+    return !!Component && <Pressable
+        style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%'
+        }}
+        accessibilityRole="button"
+        onPress={() => setPopupType(null)}
+    >
+        <View style={styles.popup}>
+            <Animated.View style={{
+                width: '100%',
+                height: '100%',
+                transform: [{translateY: value}],
+            }}>
+                <TouchableOpacity style={styles.content} activeOpacity={1}>
+                    <Component/>
+                </TouchableOpacity>
+            </Animated.View>
+        </View>
+    </Pressable>;
 };
 
 const styles = StyleSheet.create({
@@ -70,6 +77,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         width: '100%',
         minHeight: 500,
+        padding: 20,
         backgroundColor: 'white',
         borderTopRightRadius: 10,
         borderTopLeftRadius: 10,
