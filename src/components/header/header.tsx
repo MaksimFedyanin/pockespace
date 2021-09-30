@@ -1,6 +1,6 @@
 // @generated: @expo/next-adapter@2.1.52
 import React from "react";
-import {StyleSheet, View, Text} from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import Wrapper from "../wrapper/wrapper";
 
 const Header = ({ onLayout = () => ({}) }) => {
@@ -8,7 +8,13 @@ const Header = ({ onLayout = () => ({}) }) => {
         <Wrapper>
             <View style={styles.info}>
                 {/*<IconButton name='menu-outline' onPress={() => ({})}/>*/}
-                <Text style={styles.logo}>POCKESPACE</Text>
+                <Image
+                    style={styles.logo}
+                    source={{
+                        uri: 'https://see.fontimg.com/api/renderfont4/DO3zx/eyJyIjoiZnMiLCJoIjoxMzAsInciOjIwMDAsImZzIjo2NSwiZmdjIjoiIzAwMDAwMCIsImJnYyI6IiNGRkZGRkYiLCJ0IjoxfQ/QnJlYWtpbmcgU3BhY2U/magland.png',
+                    }}
+                    resizeMode="contain"
+                />
                 {/*<IconButton name='message-circle-outline' onPress={() => ({})}/>*/}
             </View>
             <View/>
@@ -27,9 +33,8 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     logo: {
-        color: 'rgb(72, 72, 72)',
-        fontSize: 16,
-        fontWeight: 'bold',
+        width: 200,
+        height: 40,
     }
 });
 

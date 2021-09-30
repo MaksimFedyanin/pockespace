@@ -1,15 +1,12 @@
 import useComponentSize from "../../hooks/useComponentSize";
 import useScreenSize from "../../hooks/useScreenSize";
 import React, { useEffect, useState } from "react";
-import {Button, Platform, StyleSheet, Text, View} from "react-native";
-import PopupHost from "../popup/popup-host";
+import { Platform, StyleSheet, View } from "react-native";
 import Popup from "../popup/popup";
 import Header from "../header/header";
 import Diviner from "../diviner/diviner";
 import Menu from "../menu/menu";
 import Tabs from "../tabs/tabs";
-import {useSetRecoilState} from "recoil";
-import {PopupState} from "../../state/popup";
 
 const Layout = ({ children }) => {
     const [layout, onLayout] = useComponentSize();
@@ -19,7 +16,6 @@ const Layout = ({ children }) => {
     const [mount, setMount] = useState(false);
     const isMobile = layout?.width < 1024;
     const [height, setHeight] = useState<number | string>(0);
-    const showPopup = useSetRecoilState(PopupState);
 
     useEffect(() => {
         setMount(true);
@@ -44,7 +40,6 @@ const Layout = ({ children }) => {
                 height,
                 overflow: "hidden",
             } : styles.wrapper}>
-                <Button title="popup" onPress={() => showPopup('registration')}/>
                 {children}
             </View>
             {(mount && !isMobile) && <View style={styles.menu}/>}
