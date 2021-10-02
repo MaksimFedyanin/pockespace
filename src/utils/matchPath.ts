@@ -30,7 +30,9 @@ function matchPath(pathname, options = {}) {
     options = { path: options };
   }
 
-  const { path, exact = false, strict = false, sensitive = false } = options;
+  const {
+    path, exact = false, strict = false, sensitive = false,
+  } = options;
 
   const paths = [].concat(path);
 
@@ -41,7 +43,7 @@ function matchPath(pathname, options = {}) {
     const { regexp, keys } = compilePath(path, {
       end: exact,
       strict,
-      sensitive
+      sensitive,
     });
     const match = regexp.exec(pathname);
 
@@ -59,7 +61,7 @@ function matchPath(pathname, options = {}) {
       params: keys.reduce((memo, key, index) => {
         memo[key.name] = values[index];
         return memo;
-      }, {})
+      }, {}),
     };
   }, null);
 }

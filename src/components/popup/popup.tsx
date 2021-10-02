@@ -12,6 +12,7 @@ import { useRecoilState } from 'recoil';
 import { PopupState, PopupType } from '../../state/popup';
 import RegistrationPopup from './registration-popup';
 import LoginPopup from './login-popup';
+import IconButton from '../icon-button/icon-button';
 
 const getPopup = (type: PopupType) => {
   if (type === 'registration') {
@@ -76,6 +77,9 @@ const Popup = () => {
             activeOpacity={1}
             onPress={Platform.OS !== 'web' ? () => Keyboard.dismiss() : () => ({})}
           >
+            <View style={styles.closeBtn}>
+              <IconButton name="close" fill="rgb(195, 195, 195)" onPress={() => setPopupType(null)} />
+            </View>
             <Component />
           </TouchableOpacity>
         </Animated.View>
@@ -105,6 +109,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
+  },
+  closeBtn: {
+    position: 'absolute',
+    top: 24,
+    right: 24,
+    zIndex: 10,
   },
 });
 
