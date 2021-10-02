@@ -9,14 +9,14 @@ import PopupTitle from './popup-title';
 import PopupContent from './popup-content';
 import { PopupState } from '../../state/popup';
 
-const RegistrationPopup = () => {
+const LoginPopup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const showPopup = useSetRecoilState(PopupState);
 
   return (
     <View>
-      <PopupTitle title="Sign up" />
+      <PopupTitle title="Sign in" />
       <PopupContent>
         <Input
           value={email}
@@ -38,9 +38,9 @@ const RegistrationPopup = () => {
         <Btn title="Continue" onPress={() => ({})} />
       </PopupContent>
       <View style={styles.horizontalText}>
-        <Text style={styles.title}>Already have an account? </Text>
-        <Pressable accessibilityRole="button" onPress={() => showPopup('login')}>
-          <Text style={styles.link}>Sign in</Text>
+        <Text style={styles.title}>no account? </Text>
+        <Pressable accessibilityRole="button" onPress={() => showPopup('registration')}>
+          <Text style={styles.link}>Sign up</Text>
         </Pressable>
       </View>
     </View>
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegistrationPopup;
+export default LoginPopup;
