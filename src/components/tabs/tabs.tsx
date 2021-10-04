@@ -10,7 +10,7 @@ const Tabs = ({ onLayout = () => ({}) }) => {
   const showPopup = useSetRecoilState(PopupState);
 
   return (
-    <View onLayout={onLayout}>
+    <View onLayout={onLayout} style={{ height: 72 }}>
       <Wrapper>
         <View style={styles.tabs}>
           <IconButton

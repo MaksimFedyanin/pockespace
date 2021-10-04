@@ -1,35 +1,25 @@
 import React, { useState } from 'react';
 import {
-  Image, StyleSheet, Text, View,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
 import { IPost } from '../../types/post';
 import IconButton from '../icon-button/icon-button';
-import PockeSpaceLink from '../link/link';
+import Author from '../author/author';
 
 const Card = ({ post }: { post: IPost }) => {
   const [isActiveLike, setActiveLike] = useState(false);
 
   return (
     <View style={styles.card}>
-      <View style={styles.header}>
-        <View style={styles.user}>
-          <View style={styles.avatar}>
-            <Image
-              style={styles.userImage}
-              source={{
-                uri: post.avatar,
-              }}
-            />
-          </View>
-          <PockeSpaceLink href={`/post/${post.title}`}>
-            <View style={styles.info}>
-              <Text style={styles.name}>{post.space}</Text>
-              <Text style={styles.date}>{post.publicationDate}</Text>
-            </View>
-          </PockeSpaceLink>
-        </View>
-        <IconButton name="more-horizontal-outline" onPress={() => ({})} />
-      </View>
+      <Author
+        id={post.id}
+        title={post.title}
+        avatar={post.avatar}
+        space={post.space}
+        publicationDate={post.publicationDate}
+      />
       <View style={styles.content}>
         {/* {post.image && <Image style={styles.image} source={{uri: post.image}}/>} */}
         <Text style={styles.description}>{post.description}</Text>

@@ -1,1 +1,3 @@
-export const API = 'http://192.168.1.9:8082';
+import { Platform } from 'react-native';
+
+export const API = Platform.OS === 'web' ? 'http://breaking-space.localhost/api' : 'http://192.168.1.6:8082';

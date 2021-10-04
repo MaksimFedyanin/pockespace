@@ -22,13 +22,13 @@ const Layout = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const value = window.height - (Platform.OS === 'web' ? 0 : layoutTabs.height);
+    const value = window.height - layoutHeader.height - layoutHeader.height - layoutTabs.height;
 
     setHeight(value);
   }, [window, layoutHeader, layoutTabs]);
 
   return (
-    <View style={{ height }}>
+    <View>
       <View style={isMobile ? styles.appMobile : styles.app} onLayout={onLayout}>
         {(mount && isMobile) && <Header onLayout={onLayoutHeader} />}
         {(mount && isMobile) && <Diviner />}
@@ -39,7 +39,7 @@ const Layout = ({ children }) => {
         )}
         <View style={isMobile ? {
           flex: 1,
-          height,
+          flexBasis: height,
           overflow: 'hidden',
         } : styles.wrapper}
         >

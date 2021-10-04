@@ -3,11 +3,16 @@ import React from 'react';
 import { RouterState } from '../../state/router';
 import Home from '../../../pages/home';
 import matchPath from '../../utils/matchPath';
+import PostId from '../../../pages/post/[post]';
 
-const Routes = [
+export const Routes = [
   {
     component: Home,
     paths: [{ value: '/', exact: true }],
+  },
+  {
+    component: PostId,
+    paths: [{ value: '/post/:postId/', exact: true }],
   },
 ];
 

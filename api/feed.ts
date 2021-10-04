@@ -1,4 +1,4 @@
-import {API} from "./index";
+import { API } from './index';
 
-export const getPosts = async () => await fetch(`${API}/posts/`)
-    .then((response) => response.json());
+export const getPosts = async () => fetch(`${API}/posts/`)
+  .then((response) => response.json());
